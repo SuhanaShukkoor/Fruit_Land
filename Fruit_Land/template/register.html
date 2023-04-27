@@ -38,7 +38,8 @@
 <body background="{% static '\images\fruits.jpg' %}">
         <center><div class="main">
             <h1>Register</h1>
-            <form action="regsub/" method="post">
+            <font color="red">{{msg}}</font>
+            <form action="{% url 'regpage' %}" method="post">
                 {% csrf_token %}
             <input type="text" placeholder="First Name" name="fname"><br>
             <input type="text" placeholder="Last Name" name="lname"><br>
