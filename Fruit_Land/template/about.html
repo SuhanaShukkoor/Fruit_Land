@@ -70,6 +70,13 @@
     border-radius: none;
     border-radius: 10px;
   }
+  .recent{
+    margin-left: 10px;
+    border-radius: 25px;
+  }
+  .recent:hover{
+    scale: 1.1;
+  }
 
   </style>
 </head>
@@ -138,9 +145,13 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-6 px-0">
-          <div class="img-box">
+          <div class="img-box">            
             <img src={{data.img.url}} alt="">
           </div>
+          
+          {% for i in rct %}
+          <img class="recent" src={{i.img.url}} alt="" height="175px" width="175px">
+          {% endfor %}
         </div>
         <div class="col-md-5">
           <div class="detail-box">
@@ -168,7 +179,7 @@
         {% for i in data.cmt.all %}
         <p>
           <b>{{i.msg}}</b>&nbsp;&nbsp;<small>{{i.date}}</small><br>
-          <small>{{i.user}}</small>&nbsp;&nbsp;<font>{{i.like}}</font><a href="like/"><img src="{% static 'images/like.png' %}" width="20px"></a>
+          <small>{{i.user}}</small>&nbsp;&nbsp;<font>{{i.like}}</font><a href="like/?id={{i.id}}"><img src="{% static 'images/like.png' %}" width="20px"></a>
         </p>
         {% endfor %}
         {% else %}
@@ -177,7 +188,7 @@
       </div>
       <div class="Commententry">
         <form action="cmt/" method="GET">
-        <Textarea name="cmtmsg" cols="50" rows="3" placeholder="Enter your comment..."></Textarea><br>
+        <Textarea name="cmtmsg" cols="50" rows="3" placeholder="Enter your comment..." required></Textarea><br>
         <input type="hidden" value={{user.username}} name="user">
         <input type="hidden" name="proid" value="{{data.id}}">
         <button type="submit">submit</button>

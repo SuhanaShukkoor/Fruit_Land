@@ -8,7 +8,20 @@ from .models import fruits,commentbox
 def about(request):
     iname=request.GET['id']
     obj=fruits.objects.get(id=iname)
-    return render(request,"about.html",{"data":obj})
+    if "recent" in request.session:
+        if iname in request.session["recent"]:
+            request.session["recent"].remove(iname)
+        rect=fruits.objects.filter(id__in=request.session["recent"])
+        request.session["recent"].insert(0,iname)
+        if len(request.session["recent"])>4:
+            request.session["recent"].pop()
+    else:
+        rect=[]
+        request.session["recent"]=[iname]
+    request.session.modified=True
+        
+
+    return render(request,"about.html",{"data":obj,"rct":rect})
 
 def comment(request):
     com=request.GET['cmtmsg']
@@ -19,4 +32,8 @@ def comment(request):
     return redirect("/product/?id="+com1)
 
 def like(request):
-    return render(request,"test.html") 
+    lik=request.GET['id']
+    obj=commentbox.objects.filter(id=lik)
+    l=int(obj[0].like)+1
+    obj.update(like=str(l))
+    return redirect("/product/?id="+str(obj[0].proid_id))
