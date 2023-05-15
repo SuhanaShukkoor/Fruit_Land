@@ -7,8 +7,12 @@ from product.models import fruits
 # Create your views here.
 def index(request):    
     obj=fruits.objects.all()
-    print("hi",obj)
-    return render(request,"index.html",{"data":obj})
+    if "user" in request.COOKIES:
+        n=request.COOKIES["user"]
+    else:
+        n=''
+        print("hi",obj)
+    return render(request,"index.html",{"data":obj,"name":n})
 
 def test1(request):
     return render(request,"test.html",{"val":"java"})
@@ -20,7 +24,9 @@ def login(request):
         u=auth.authenticate(username=uname,password=pname)
         if u:
             auth.login(request,u)
-            return redirect("/")
+            res=redirect("/")
+            res.set_cookie("user",uname)
+            return res
         msg="Invalid username and password"
         return render(request,"login.html",{"msg":msg})
     else:
@@ -57,6 +63,8 @@ def register(request):
     
 def logout(request):
     auth.logout(request)
-    return redirect("/")
+    ret=redirect("/")
+    ret.delete_cookie("user")
+    return ret
 
 
