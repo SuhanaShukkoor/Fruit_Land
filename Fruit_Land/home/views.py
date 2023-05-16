@@ -67,4 +67,7 @@ def logout(request):
     ret.delete_cookie("user")
     return ret
 
+def feed(request):
+    return render(request,"test.html")
+
 
