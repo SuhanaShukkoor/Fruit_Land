@@ -8,6 +8,8 @@ urlpatterns = [
     path('login/',views.login,name="logpage"),
     path('register/',views.register,name="regpage"),
     path('logout/',views.logout),
-    path('feed/',feed.latest())
+    path('feed/',feed.latest()),
+    path('search/',views.search),
+    path('search/searchsub/',views.searchsub)
    
 ]
