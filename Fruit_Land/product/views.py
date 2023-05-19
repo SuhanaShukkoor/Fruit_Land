@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from .models import fruits,commentbox
 from django.http import JsonResponse
+from django.core.cache import cache
 
 
 # Create your views here.
@@ -50,4 +51,15 @@ def autoc(request):
         print("hello",obj) 
         return JsonResponse(a,safe=False)
     return render(request,"test.html")
+
+def about2(request):
+    iname=request.GET['id']
+    if cache.get(iname):
+        print("DATA FROM CACHE")
+        obj=cache.get(iname)
+    else:
+        obj=fruits.objects.get(id=iname)
+        cache.set(iname,obj)
+        print("DATA FROM DATABASE")
+    return render(request,"about.html",{"data":obj})
 
